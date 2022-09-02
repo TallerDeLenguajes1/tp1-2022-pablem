@@ -1,55 +1,68 @@
-﻿internal class Program
+﻿using System.Text;
+
+internal class Program
 {
     private static void Main(string[] args)
     {
-        static int cuadrado(int x)
-        {
-            return x * x;
-        }
-        static float division(float a, float b)
-        {
-            return a / b;
-        }
-        static float kilomLitro(float k, float l)
-        {
-            return division(k,l);
-        }
-        /* try
-        {
-            System.Console.WriteLine("1. Ingrese un númnero");
-            int num = Convert.ToInt32(Console.ReadLine());
+        Console.OutputEncoding = Encoding.UTF8;
 
-            num = cuadrado(num);
-
-            Console.WriteLine(num);
-        }
-        catch (FormatException)
+        //Plantilla menu principal:
+        string opcion;
+        do {
+            Console.Clear();
+            Console.WriteLine("\n¿Qué operación desea realizar?\n");
+            Console.WriteLine("\n(C)uadrado   (D)ivisión   (K)ilometros/litro   (P)rovincias   (S)alir\n");
+            opcion = Console.ReadLine().ToLower();
+            if (opcion == "c")
+                cuadrado();
+            if (opcion == "d")
+                division();
+            if (opcion == "d")
+                cuadrado();
+        } while (opcion != "s");
+            
+            
+        static void cuadrado()
         {
+            System.Console.WriteLine("\n-- FUNCION CUADRADO --\n");
+            System.Console.WriteLine("\nIngrese un númnero:");
+            try {
+                int x = Convert.ToInt32(Console.ReadLine());
+                x *= x;
+                System.Console.WriteLine($"\nEl resultado es: {x}");
+            }
+            catch (FormatException) {
             Console.WriteLine("Error: Fordmato incorrecto");
             // throw;
+            }
+            catch (OverflowException) {
+                Console.WriteLine("Error: Desbordamiento");
+                // throw;
+            }
+            catch (System.Exception e) {
+                Console.WriteLine("Error General: "+ e.Message );
+                // throw;
+            }
         }
-        catch (OverflowException)
+        static void division()
         {
-            Console.WriteLine("Error: Desbordamiento");
-            // throw;
+            float a, b;
+            System.Console.WriteLine("\n-- FUNCION DIVISION --\n");
+            Console.WriteLine("Ingrese el primer número: ");
+            try {
+                a = float.Parse(Console.ReadLine());
+                Console.WriteLine("Ingrese el segundo número: ");
+                b = float.Parse(Console.ReadLine());
+                a=a/b;
+                Console.WriteLine($"El resultado es: {a}");
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            } 
         }
-        catch (System.Exception e)
-        {
-            Console.WriteLine("Error: "+ e.Message );
-            // throw;
-        } */
-        try
-        {
-            Console.WriteLine("1. Ingrese el primer número: ");
-            float a = float.Parse(Console.ReadLine());
-            Console.WriteLine("2. Ingrese el segundo número: ");
-            float b = float.Parse(Console.ReadLine());
-            Console.WriteLine($"El resultado es: {division(a, b)}");
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
+        
+    //FIN DE Main 
     }
 }
