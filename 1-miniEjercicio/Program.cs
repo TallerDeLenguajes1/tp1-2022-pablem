@@ -4,63 +4,121 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        Console.OutputEncoding = Encoding.UTF8;
+        Console.OutputEncoding = Encoding.UTF8; // Para poder visualizar el caracter infinito
 
         //Plantilla menu principal:
-        string opcion;
+        string? opcion;
         do {
             Console.Clear();
             Console.WriteLine("\n¿Qué operación desea realizar?\n");
-            Console.WriteLine("\n(C)uadrado   (D)ivisión   (K)ilometros/litro   (P)rovincias   (S)alir\n");
-            opcion = Console.ReadLine().ToLower();
+            Console.WriteLine("(C)uadrado   (D)ivisión   (K)ilometros/litro   (P)rovincias   (S)alir\n");
+            try {
+                opcion = Console.ReadLine()!.ToLower();
+            }
+            catch (Exception) {
+                opcion = "z";
+            }
             if (opcion == "c")
                 cuadrado();
             if (opcion == "d")
                 division();
-            if (opcion == "d")
-                cuadrado();
+            if (opcion == "k")
+                kilometroLitro();
+            if (opcion == "p")
+                provincias();
         } while (opcion != "s");
-            
-            
-        static void cuadrado()
+              
+        static void cuadrado() // En este método uso excepciones derivadas
         {
             System.Console.WriteLine("\n-- FUNCION CUADRADO --\n");
-            System.Console.WriteLine("\nIngrese un númnero:");
+            System.Console.WriteLine("Ingrese un númnero:");
             try {
                 int x = Convert.ToInt32(Console.ReadLine());
                 x *= x;
                 System.Console.WriteLine($"\nEl resultado es: {x}");
             }
             catch (FormatException) {
-            Console.WriteLine("Error: Fordmato incorrecto");
-            // throw;
+                Console.WriteLine("Error: Fordmato incorrecto");
             }
             catch (OverflowException) {
                 Console.WriteLine("Error: Desbordamiento");
-                // throw;
             }
             catch (System.Exception e) {
                 Console.WriteLine("Error General: "+ e.Message );
-                // throw;
+            }
+            finally {
+                Console.WriteLine("\n(presine enter)");
+                Console.ReadKey();
             }
         }
-        static void division()
+
+        static void division() // En este método uso atributos: message, inner exception y stack trace 
         {
-            float a, b;
+            float? a, b;
             System.Console.WriteLine("\n-- FUNCION DIVISION --\n");
             Console.WriteLine("Ingrese el primer número: ");
             try {
-                a = float.Parse(Console.ReadLine());
+                a = float.Parse(Console.ReadLine()!);
                 Console.WriteLine("Ingrese el segundo número: ");
-                b = float.Parse(Console.ReadLine());
+                b = float.Parse(Console.ReadLine()!);
                 a=a/b;
                 Console.WriteLine($"El resultado es: {a}");
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                
-                throw;
+                Console.WriteLine($"\n[Error al dividir] " + e.Message);                 // Qué ha sucedido
+                if(e.InnerException != null )                           
+                    Console.WriteLine("\nInner exception: " + e.InnerException.Message); // Llamadas internas 
+                Console.WriteLine($"\n[Error al dividir] " + e.StackTrace);              // Dónde ha sucedido
+            }
+            finally {
+                Console.WriteLine("\n(presine enter)");
+                Console.ReadKey();
             } 
+        }
+
+        static void kilometroLitro() // En este método uso excepciones definidas por el usuario (yo)
+        {
+            float? k, li;
+            bool ban = true;
+
+            var exc = new NegativeNumberException("No puede ingresar cero o números negativos.");
+
+            do
+            {
+                System.Console.WriteLine("\n-- CALCULAR Km/L --\n");
+                Console.WriteLine("Kilometros conducidos: ");
+                try {
+                    k = float.Parse(Console.ReadLine()!);
+                    if (k<=0)
+                        throw exc;
+
+                    Console.WriteLine("Litros usados ");
+                    li = float.Parse(Console.ReadLine()!);
+                    if (li<=0)
+                        throw exc;
+
+                    k=k/li;
+                    Console.WriteLine($"El resultado es: {k}");
+                    ban = false;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"\n[Error al calcular] " + e.Message);                // Qué ha sucedido
+                    if(e.InnerException != null )                           
+                        Console.WriteLine("\nInner exception: " + e.InnerException.Message); // Llamadas internas 
+                    Console.WriteLine($"\n[Error al calcular] " + e.StackTrace);             // Dónde ha sucedido
+                }
+            } while (ban);
+            
+            Console.WriteLine("\n(presine enter)");
+            Console.ReadKey();
+             
+        }
+
+        static void provincias() 
+        {
+            
         }
         
     //FIN DE Main 
