@@ -1,4 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Text.Json;
 
 internal class Program
 {
@@ -55,7 +60,7 @@ internal class Program
         static void division() // En este método uso atributos: message, inner exception y stack trace 
         {
             float? a, b;
-            System.Console.WriteLine("\n-- FUNCION DIVISION --\n");
+            Console.WriteLine("\n-- FUNCION DIVISION --\n");
             Console.WriteLine("Ingrese el primer número: ");
             try {
                 a = float.Parse(Console.ReadLine()!);
@@ -86,7 +91,7 @@ internal class Program
 
             do
             {
-                System.Console.WriteLine("\n-- CALCULAR Km/L --\n");
+                Console.WriteLine("\n-- CALCULAR Km/L --\n");
                 Console.WriteLine("Kilometros conducidos: ");
                 try {
                     k = float.Parse(Console.ReadLine()!);
@@ -118,9 +123,45 @@ internal class Program
 
         static void provincias() 
         {
-            
-        }
-        
+            Console.WriteLine("\n-- MOSTRAR PROVINCIAS --\n");
+
+            var url = $"https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Accept = "application/json";
+            try
+            {
+                using (WebResponse response = request.GetResponse())
+                {
+                    using (Stream strReader = response.GetResponseStream())
+                    {
+                        if (strReader == null) return;
+                        using (StreamReader objReader = new StreamReader(strReader))
+                        {
+                            string responseBody = objReader.ReadToEnd();
+                            ProvinciasArgentina ListaProvincias = JsonSerializer.Deserialize<ProvinciasArgentina>(responseBody);
+                            foreach (Provincia Prov in ListaProvincias.Provincias) {
+                                Console.WriteLine("id: " + Prov.Id + " Nombre: " + Prov.Nombre);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (WebException)
+            {
+                Console.WriteLine("Problemas de acceso a la API");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally 
+            {
+                Console.WriteLine("\n(presine enter)");
+                Console.ReadKey();
+            }   
+        }  
     //FIN DE Main 
     }
 }
