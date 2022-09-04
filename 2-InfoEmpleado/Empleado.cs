@@ -10,14 +10,30 @@ public class Empleado
 
     static float sueldoBasico;
 
+    bool casado, hijos, titulo; //?
+    int cantHijos;              //?
+
+    public Empleado(string dni, string nombre, string apellido, DateTime fechaNac, string direccion, DateTime fechaIngreso)
+    {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaNac = fechaNac;
+        this.direccion = direccion;
+        this.fechaIngreso = fechaIngreso;
+    }
+
     public string Dni { get => dni; set => dni = value; }
     public string Nombre { get => nombre; set => nombre = value; }
     public string Apellido { get => apellido; set => apellido = value; }
     public DateTime FechaNac { get => fechaNac; set => fechaNac = value; }
     public string Direccion { get => direccion; set => direccion = value; }
-    public string Cargo { get => cargo; set => cargo = value; }
     public DateTime FechaIngreso { get => fechaIngreso; set => fechaIngreso = value; }
     public static float SueldoBasico { get => sueldoBasico; set => sueldoBasico = value; }
+    public bool Casado { get => casado; set => casado = value; }
+    public bool Hijos { get => hijos; set => hijos = value; }
+    public bool Titulo { get => titulo; set => titulo = value; }
+    public int CantHijos { get => cantHijos; set => cantHijos = value; }
 
     public int Antiguedad()
     {
@@ -38,7 +54,14 @@ public class Empleado
         
         return sueldoBasico*(1+adicional) - descuento;
     }
-    
 
+    public void Mostrar()
+    {
+        Console.WriteLine($"\t{Apellido}, {Nombre}.");
+        Console.WriteLine("\tEdad: " + Edad() + " años.");
+        Console.WriteLine("\tAntigüedad: " + Antiguedad() + " años.");
+        Console.WriteLine("\tSalario: " + Salario() + " USDC.");
+        Console.WriteLine();
+    }
 
 }
