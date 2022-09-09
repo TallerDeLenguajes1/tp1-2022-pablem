@@ -1,7 +1,13 @@
-﻿internal class Program
+﻿using NLog;
+
+public static class Program
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
     private static void Main(string[] args)
     {
+        Logger.Trace("Inicio de ejecución del programa");
+
         int N = 1;
         Empleado.SueldoBasico = 10000;
         
@@ -10,8 +16,9 @@
         {
             N = Convert.ToInt32(Console.ReadLine()); 
         } 
-        catch (FormatException)
+        catch (FormatException ex)
         {
+            Logger.Error(ex, "Ingresando la cantidad de empleados");
         }
         var listaEmpleados = new List<Empleado>();
         Empleado nuevo;
@@ -39,10 +46,12 @@
             catch (Exception e)
             {
                 Console.WriteLine("[Error al cargar datos] " + e.Message);
+                Logger.Error(e, "Ingresando algún campo de empleado");
                 i--;
             }
         }
         Console.WriteLine("\nEmpleados Cargados\n");
+        Logger.Trace("Lista de empleados realizada");
         int j=1;
         foreach (var emp in listaEmpleados)
         {
