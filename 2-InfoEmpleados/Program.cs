@@ -1,8 +1,13 @@
-﻿public static class Program
+﻿// using NLog;
+public static class Program
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
     private static void Main(string[] args)
     {
-       int N = 1;
+        Logger.Trace("Inicio de ejecución del programa");
+
+        int N = 1;
         Empleado.SueldoBasico = 10000;
         
         Console.WriteLine("\nIngrese la cantidad de empleados: ");
@@ -12,7 +17,7 @@
         } 
         catch (FormatException ex)
         {
-            Console.WriteLine("\n[Error al ingresar cantidad de empleados] " + ex.Message+"\n");
+            Logger.Error(ex, "Ingresando la cantidad de empleados");
         }
         var listaEmpleados = new List<Empleado>();
         Empleado nuevo;
@@ -38,7 +43,7 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine("\n[Error al cargar datos] " + e.Message+"\n");
+                Logger.Error(e, "Ingresando algún campo de empleado");
                 i--;
             }
         }
@@ -49,5 +54,6 @@
             Console.WriteLine($"{j++})");
             emp.Mostrar();
         }
+        Logger.Trace("Lista de empleados realizada. Fin del programa.");
     }
 }
