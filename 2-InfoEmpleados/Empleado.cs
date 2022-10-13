@@ -5,7 +5,6 @@ public class Empleado
     string apellido;
     DateTime fechaNac;
     string direccion;
-    string cargo;
     DateTime fechaIngreso;
 
     static float sueldoBasico;
@@ -59,7 +58,7 @@ public class Empleado
     {
         Console.WriteLine($"\t{Apellido}, {Nombre}.");
         Console.WriteLine("\tEdad: " + Edad() + " años.");
-        Console.WriteLine("\tAntigüedad: " + Antiguedad() + " años.");
+        Console.WriteLine("\tAntigüedad: " + Antiguedad() + " año/s.");
         Console.WriteLine("\tSalario: " + Salario() + " USDC.");
         Console.WriteLine();
     }
